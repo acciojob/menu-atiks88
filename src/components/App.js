@@ -3,10 +3,8 @@ import "./styles/App.css";
 
 const App = () => {
 
-  const [inputValue, setInputValue] = useState("All");
-
-  const menuItems =[
-    {
+    const [inputValue, setInputValue] = useState("All");
+    const [menuItems,setMenuItems] = useState([ {
       id: 1,
       title: 'buttermilk pancakes',
       category: 'breakfast',
@@ -77,39 +75,43 @@ const App = () => {
       price: 16.99,
       img: './images/item-9.jpeg',
       desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
-    },
-  ]
-
-  return (
-    <React.Fragment>
-      <h1 className="heading">Our Menu</h1>
-      <div className="border1"></div>
-      <div className="catagories">
-        <p>All</p>
-        <p>Breakfast</p>
-        <p>Lunch</p>
-        <p>Shakes</p>
-      </div>
-      <div className="menu">
-        {
-          menuItems.map((items)=>{
-            return(
-              <div key={items.id} className="menuItems">
-                <div id="images"><img src={items.img} alt={items.title}/></div>
-                <div className="info">
-                <div className="TitleInfo"> 
-                  <h3 className="h3title">{items.title}</h3>
-                  <p className="pPrice">{items.price}</p>
+    },]);
+  
+    const handleCategoryClick = (category) => {
+      setInputValue(category);
+    }
+  
+    const filteredMenuItems = inputValue === 'All' ? menuItems : menuItems.filter(item => item.category === inputValue);
+  
+    
+    return (
+      <React.Fragment>
+        <h1 className="heading">Our Menu</h1>
+        <div className="border1"></div>
+        <div className="catagories">
+          <p onClick={() => handleCategoryClick("All")}>All</p>
+          <p onClick={() => handleCategoryClick("breakfast")}>Breakfast</p>
+          <p onClick={() => handleCategoryClick("lunch")}>Lunch</p>
+          <p onClick={() => handleCategoryClick("shakes")}>Shakes</p>
+        </div>
+        <div className="menu">
+          {
+               filteredMenuItems.map((item) => (
+                <div key={item.id} className="menuItems">
+                  <div id="images"><img src={item.img} alt={item.title}/></div>
+                  <div className="info">
+                    <div className="TitleInfo"> 
+                      <h3 className="h3title">{item.title}</h3>
+                      <p className="pPrice">{item.price}</p>
+                    </div>
+                    <p>{item.desc}</p>
+                  </div>
                 </div>
-                <p>{items.desc}</p>
-                </div>
-              </div>
-            )
-          })
-        }
-      </div>
-    </React.Fragment>
-  );
-}
-
+              ))
+          }
+        </div>
+      </React.Fragment>
+    );
+  }
+  
 export default App;
